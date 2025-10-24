@@ -1,4 +1,3 @@
-{% load static %}
 <section class="cart section--lg container">
         <div class="table__container">
           <table class="table">
@@ -13,45 +12,41 @@
               </tr>
             </thead>
             <tbody>
-              {% for product in products %}
-                <tr>
-                  <td>
-                    <img
-                      src="{{product.image.url}}"
-                      alt=""
-                      class="table__img"
-                    />
-                  </td>
-                  <td>
-                    <h3 class="table__title">
-                        {{product.name}}
-                    </h3>
-                    <p class="table__description">
-                      {{ product.description|truncatewords:5 }}
-                    </p>
-                  </td>
-                  <td>
-                    {% if product.discount > 0 %}
-                      <span class="table__price">{{product.discount_price}}</span>
-                      <span class="old__price">&nbsp;{{product.price}}</span>
-                    
-                    {% else %}
-                      <span class="table__price">{{product.price}}</span>
-                    {% endif %}
-                  </td>
-                    <td><input type="number" value="{{product.quantity}}" class="quantity" readonly /></td>
-                    <td><span class="subtotal">$220</span></td>
-                    <td><a href="{% url 'remove_cart_item' product.data.id %}"><i class="fi fi-rs-trash table__trash"></i></a></td>
-                </tr>
+              {% for product in products.products %}
+                    <tr>
+                        <td>
+                        <img
+                            src="{{product.data.image.url}}"
+                            alt=""
+                            class="table__img"
+                        />
+                        </td>
+                        <td>
+                        <h3 class="table__title">
+                            {{product.data.name}}
+                        </h3>
+                        <p class="table__description">
+                            {{product.data.description | truncatewords:5}}
+                        </p>
+                        </td>
+                        <td>
+                          {% if product.data.discount > 0 %}
+                            <span class="table__price">${{product.data.discount_price}}</span>
+                            <span class="old__price">&nbsp;${{ product.data.price }}</span>
+                          {% else %}
+                            <span class="table__price">${{product.data.price}}</span>
+                          {% endif %}
+                        </td>
+                        <td><input type="number" value="{{product.quantity}}" class="quantity" readonly/></td>
+                        <td><span class="subtotal">${{product.total}}</span></td>
+                        <td><a href="{% url 'remove_cart_item' product.data.id %}"><i class="fi fi-rs-trash table__trash"></i></a></td>
+                    </tr>
               {% endfor %}
             </tbody>
           </table>
         </div>
 
         <div class="cart__actions">
-          <a href="#" class="btn flex btn__md">
-            <i class="fi-rs-shuffle"></i> Update Cart
-          </a>
           <a href="{% url 'shop' %}" class="btn flex btn__md">
             <i class="fi-rs-shopping-bag"></i> Continue Shopping
           </a>
@@ -62,68 +57,23 @@
         </div>
 
         <div class="cart__group grid">
-          <div>
-            <div class="cart__shipping">
-              <h3 class="section__title">Calculate Shopping</h3>
-              <form action="" class="form grid">
-                <input
-                  type="text"
-                  class="form__input"
-                  placeholder="State / Country"
-                />
-                <div class="form__group grid">
-                  <input type="text" class="form__input" placeholder="City" />
-                  <input
-                    type="text"
-                    class="form__input"
-                    placeholder="PostCode"
-                  />
-                </div>
-                <div class="form__btn">
-                  <button class="btn flex btn--sm">
-                    <i class="fi-rs-shuffle"></i> Update
-                  </button>
-                </div>
-              </form>
-            </div>
-            <div class="cart__coupon">
-              <h3 class="section__title">Apply Coupon</h3>
-              <form action="" class="coupon__form form grid">
-                <div class="form__group grid">
-                  <input
-                    type="text"
-                    class="form__input"
-                    placeholder="Enter Your Coupon"
-                  />
-                  <div class="form__btn">
-                    <button class="btn flex btn--sm">
-                      <i class="fi-rs-label"></i> Apply
-                    </button>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
 
           <div class="cart__total">
             <h3 class="section__title">Cart Totals</h3>
             <table class="cart__total-table">
                 <tr>
-                  <td><span class="cart__total-title">Cart Subtotal</span></td>
-                  <td><span class="cart__total-price">$240.00</span></td>
+                  <td><span class="cart__total-title">Total without discount</span></td>
+                  <td><span class="cart__total-price old__price">${{products.total_price}}</span></td>
                 </tr>
                 <tr>
-                  <td><span class="cart__total-title">Shipping</span></td>
-                  <td><span class="cart__total-price">$10.00</span></td>
+                  <td><span class="cart__total-title">Profit</span></td>
+                  <td><span class="cart__total-price">${{products.profit}}</span></td>
                 </tr>
                 <tr>
                   <td><span class="cart__total-title">Total</span></td>
-                  <td><span class="cart__total-price">$250.00</span></td>
+                  <td><span class="cart__total-price">${{products.total_with_discount}}</span></td>
                 </tr>
             </table>
-            <a href="checkout.html" class="btn flex btn--md">
-              <i class="fi fi-rs-box-alt"></i> Proceed To Checkout
-            </a>
           </div>
         </div>
-</section>
+      </section>

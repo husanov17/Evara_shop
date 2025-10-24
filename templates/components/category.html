@@ -1,28 +1,29 @@
 {% load static %}
 <section class="categories container section">
-    <h3 class="section__title"><span>Popular</span> Categories</h3>
-    <div class="categories__container swiper">
-        <div class="swiper-wrapper">
+        <h3 class="section__title"><span>Popular</span> Categories</h3>
+        <div class="categories__container swiper">
+          <div class="swiper-wrapper">
 
-            {%for category in categories %}
-                <a href="{% url 'category_products' category.id %}" class="category__item swiper-slide">
-                    <img
-                    src="{{category.image.url}}"
-                    alt=""
-                    class="category__img"
-                    />
-                    <h3 class="category__title">{{category.name}}</h3>
-                </a>
-            {%endfor%}
+            {% for category in categories %}
+              <a href="{% url 'category_products' category.id  %}" class="category__item swiper-slide">
+                <img
+                  src="{{category.image.url}}"
+                  alt=""
+                  class="category__img"
+                />
+                <h3 class="category__title">{{category.name}}</h3>
+              </a>
+            {% endfor %}
+            
+          </div>
 
-
+          <div class="swiper-button-prev">
+            <i class="fi fi-rs-angle-left"></i>
+          </div>
+          <div class="swiper-button-next">
+            <i class="fi fi-rs-angle-right"></i>
+          </div>
         </div>
+      </section>
 
-        <div class="swiper-button-prev">
-        <i class="fi fi-rs-angle-left"></i>
-        </div>
-        <div class="swiper-button-next">
-        <i class="fi fi-rs-angle-right"></i>
-        </div>
-    </div>
-</section>
+  

@@ -20,6 +20,48 @@
     <!--=============== CSS ===============-->
     <link rel="stylesheet" href="{% static 'assets/css/styles.css' %}" />
 
+    <style>
+      #toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Toast asosiy dizayni */
+.toast {
+    background-color: #333;
+    color: white;
+    padding: 14px 18px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    opacity: 0;
+    transform: translateX(100%);
+    animation: slideIn 0.5s forwards, fadeOut 0.5s 2.5s forwards;
+}
+
+/* Turli statuslar uchun ranglar */
+.toast.success { background-color: #28a745; }  /* yashil */
+.toast.error { background-color: #dc3545; }    /* qizil */
+.toast.warning { background-color: #ffc107; color: #222; } /* sariq */
+.toast.info { background-color: #17a2b8; }     /* ko‘k */
+
+/* Kirish animatsiyasi */
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(100%); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+/* 3 sekunddan keyin chiqib ketish animatsiyasi */
+@keyframes fadeOut {
+    from { opacity: 1; transform: translateX(0); }
+    to { opacity: 0; transform: translateX(100%); }
+}
+    </style>
+
     <title>Ecommerce Website</title>
   </head>
   <body>
@@ -29,22 +71,31 @@
           <div class="header__top">
             <div class="header__container container">
               <div class="header__contact">
-                <span>(+998)-91-667-2634</span>
-                <span>Our location</span>
+                <span>(+998)-94-010-9822</span>
+                <span>Lokatsiyamiz</span>
               </div>
               <p class="header__alert-news">
-                Eng arzon mahsulotlar - faqat bizada!
+                Eng arzon mahsulotlar - faqat bizda!
               </p>
                 <div>
-                    <a href="{% url 'login_user' %}" class="header_top-action">
-                      Log In /
-                    </a>
-                    <a href="{% url 'register_user' %}" class="header_top-action">
-                      sign Up
-                    </a>
-                </div> 
+                  <a href="{% url 'login_user' %}" class="header__top-action">
+                    Log In /
+                  </a>
+                  <a href="{% url 'register_user' %}" class="header__top-action">
+                    Sign Up
+                  </a>
+                </div>
             </div>
           </div>
+      {% endif %}
+      {% if messages %}
+      <div id="toast-container">
+          {% for message in messages %}
+          <div class="toast {{ message.tags }}">
+              {{ message }}
+          </div>
+          {% endfor %}
+      </div>
       {% endif %}
 
       <nav class="nav container">
@@ -66,29 +117,29 @@
           </div>
           <ul class="nav__list">
             <li class="nav__item">
-              <a href="{% url 'dashboard' %}" class="nav__link {% if request.path == '/' %} active-link {% endif %} ">Bosh sahifa</a>
+              <a href="{% url 'dashboard' %}" class="nav__link {% if request.path == '/' %}active-link {% endif %}">Bosh sahifa</a>
             </li>
             <li class="nav__item">
-              <a href="{% url 'shop' %}" class="nav__link {% if request.path == '/shop/' %} active-link {% endif %}">Mahsulotlar</a>
+              <a href="{% url 'shop' %}" class="nav__link nav__link {% if request.path == '/shop/' %}active-link {% endif %}">Mahsulotlar</a>
             </li>
             <li class="nav__item">
-              <a href="{% url 'profile' %}" class="nav__link {% if request.path == '/profile/' %} active-link {% endif %}">Profilim</a>
+              <a href="{% url 'profile' %}" class="nav__link {% if request.path == '/profile/' %}active-link {% endif %}">Profilim</a>
             </li>
             {% if request.user.is_authenticated %}
-              <li class="nav__item">
-                <a href="{% url 'logout_user' %}" class="nav__link">Log Out</a>
-              </li>
+                <li class="nav__item">
+                  <a href="{% url 'logout_user' %}" class="nav__link">Log Out</a>
+                </li>
             {% endif %}
           </ul>
           <div class="header__search">
             <form method="get">
                 <input
-                type="text"
-                placeholder="Mahsulotlarni bu yerdan qidiring..."
-                class="form__input"
-                name="q"
+                  type="text"
+                  placeholder="Mahsulotlar ichidan qidiring..."
+                  class="form__input",
+                  name="q"
                 />
-                <button class="search__btn" type="submit">
+                <button class="search__btn", type="submit">
                   <img src="{% static 'assets/img/search.png' %}" alt="search icon" />
                 </button>
             </form>
@@ -104,17 +155,16 @@
             <span class="count" id="cart_count">{{cart_count}}</span>
           </a>
           <div class="header__action-btn nav__toggle" id="nav-toggle">
-            <img src="{% static './assets//img/menu-burger.svg' %}" alt="">
+            <img src="./assets//img/menu-burger.svg" alt="">
           </div>
         </div>
       </nav>
     </header>
 
-
     <main class="main">
         {% block main %}
         {% endblock main %}
-    </main> 
+    </main>
 
     <!--=============== FOOTER ===============-->
     <footer class="footer container">
@@ -138,35 +188,35 @@
             <div class="footer__links flex">
               <a href="#">
                 <img
-                  src="{% static './assets/img/icon-facebook.svg' %}"
+                  src="./assets/img/icon-facebook.svg"
                   alt=""
                   class="footer__social-icon"
                 />
               </a>
               <a href="#">
                 <img
-                  src="{% static './assets/img/icon-twitter.svg' %}"
+                  src="./assets/img/icon-twitter.svg"
                   alt=""
                   class="footer__social-icon"
                 />
               </a>
               <a href="#">
                 <img
-                  src="{% static './assets/img/icon-instagram.svg' %}"
+                  src="./assets/img/icon-instagram.svg"
                   alt=""
                   class="footer__social-icon"
                 />
               </a>
               <a href="#">
                 <img
-                  src="{% static './assets/img/icon-pinterest.svg' %}"
+                  src="./assets/img/icon-pinterest.svg"
                   alt=""
                   class="footer__social-icon"
                 />
               </a>
               <a href="#">
                 <img
-                  src="{% static './assets/img/icon-youtube.svg' %}"
+                  src="./assets/img/icon-youtube.svg"
                   alt=""
                   class="footer__social-icon"
                 />
@@ -216,5 +266,14 @@
 
     <!--=============== MAIN JS ===============-->
     <script src="{% static 'assets/js/main.js' %}"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    // Toastlar 3 soniyadan keyin avtomatik o‘chadi
+    setTimeout(() => {
+        document.querySelectorAll('.toast').forEach(toast => toast.remove());
+    }, 3000);
+});
+</script>
   </body>
 </html>

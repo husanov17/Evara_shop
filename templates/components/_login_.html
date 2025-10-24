@@ -1,20 +1,20 @@
 <section class="login-register section--lg">
-  <div class="login-register__container container grid">
-    <div class="login">
-      <h3 class="section__title">{{path}}</h3>
-      <form class="form grid" method='post'>
-          {% csrf_token %}
-          
-          {% for field in form  %}
-            {{ field }}
-            {{field.errors}}
+    <div class="login-register__container container grid">
+      <div class="login">
+        <h3 class="section__title">{{path}}</h3>
+        <form class="form grid" method='post'>
+            {% csrf_token %}
+            
+            {% for field in form  %}
+              {{ field }}
+              {{field.errors}}
 
-          {% endfor %}
+            {% endfor %}
 
-        <div class="form__btn">
-          <button class="btn" type="submit">{{path}}</button>
-        </div>
-      </form>
+          <div class="form__btn">
+            <button class="btn" type="submit">{{path}}</button>
+          </div>
+        </form>
+      </div>
     </div>
-  </div>
-</section>
+  </section>

@@ -1,129 +1,105 @@
-{% load static %}
 <section class="products container section--lg">
   {% if products %}
-      <p class="total__products">Mahsulotlar soni: <span>{{ products.count }}</span> ta</p>
+      <p class="total__products">
+          Umumiy mahsulotlar soni <span>{{ count }}</span> ta!
+      </p>
       <div class="products__container grid">
-        {% for product in products %}
-          <div class="product__item">
-            <div class="product__banner">
-              <a href="details.html" class="product__images">
-                <img
-                  src="{{ product.image.url }}"
-                  alt="{{ product.name }}"
-                  class="product__img default"
-                />
-              </a>
-              <div class="product__actions">
-                <a href="#" class="action__btn" aria-label="Quick View">
-                  <i class="fi fi-rs-eye"></i>
-                </a>
-                <a href="#" class="action__btn" aria-label="Add to Wishlist">
-                  <i class="fi fi-rs-heart"></i>
-                </a>
-                <a href="#" class="action__btn" aria-label="Compare">
-                  <i class="fi fi-rs-shuffle"></i>
-                </a>
+          {% for product in products %}
+              <div class="product__item">
+                  <div class="product__banner">
+                      <a href="details.html" class="product__images">
+                          <img src="{{ product.image.url }}" alt="" class="product__img default" />
+                      </a>
+                      <div class="product__actions">
+                          <a href="#" class="action__btn" aria-label="Quick View">
+                              <i class="fi fi-rs-eye"></i>
+                          </a>
+                          <a href="#" class="action__btn" aria-label="Add to Wishlist">
+                              <i class="fi fi-rs-heart"></i>
+                          </a>
+                          <a href="#" class="action__btn" aria-label="Compare">
+                              <i class="fi fi-rs-shuffle"></i>
+                          </a>
+                      </div>
+                      {% if product.discount > 0 %}
+                          <div class="product__badge light-pink">-{{ product.discount }}%</div>
+                      {% endif %}
+                  </div>
+                  <div class="product__content">
+                      <span class="product__category">{{ product.category.name }}</span>
+                      <a href="details.html">
+                          <h3 class="product__title">{{ product.name }}</h3>
+                      </a>
+                      <div class="product__rating">
+                          <i class="fi fi-rs-star"></i>
+                          <i class="fi fi-rs-star"></i>
+                          <i class="fi fi-rs-star"></i>
+                          <i class="fi fi-rs-star"></i>
+                          <i class="fi fi-rs-star"></i>
+                      </div>
+                      <div class="product__price flex">
+                          {% if product.discount_price %}
+                              <span class="new__price">${{ product.discount_price }}</span>
+                              <span class="old__price">${{ product.price }}</span>
+                          {% else %}
+                              <span class="new__price">${{ product.price }}</span>
+                          {% endif %}
+                      </div>
+                      <a href="#" class="action__btn cart__btn" aria-label="Add To Cart" data-product-id="{{product.id}}">
+                          <i class="fi fi-rs-shopping-bag-add"></i>
+                      </a>
+                  </div>
               </div>
-              {% if product.discount > 0 %}
-                <div class="product__badge light-pink">-{{ product.discount }}%</div>
-              {% endif %}
-            </div>
-
-            <div class="product__content">
-              <span class="product__category">{{ product.category.name }}</span>
-              <a href="details.html">
-                <h3 class="product__title">{{ product.name }}</h3>
-              </a>
-              <div class="product__rating">
-                <i class="fi fi-rs-star"></i>
-                <i class="fi fi-rs-star"></i>
-                <i class="fi fi-rs-star"></i>
-                <i class="fi fi-rs-star"></i>
-                <i class="fi fi-rs-star"></i>
-              </div>
-              <div class="product__price flex">
-                {% if product.discount_price %}
-                  <span class="new__price">${{ product.discount_price }}</span>
-                  <span class="old__price">${{ product.price }}</span>
-                {% else %}
-                  <span class="new__price">${{ product.price }}</span>
-                {% endif %}
-              </div>
-              <a href="#" class="action__btn cart__btn" aria-label="Add To Cart" data-product-id="{{product.id}}">
-                <i class="fi fi-rs-shopping-bag-add"></i>
-              </a>
-            </div>
-          </div>
-        {% endfor %}
+          {% endfor %}
       </div>
 
       <!-- Pagination -->
       <ul class="pagination">
           {% if products.has_previous %}
-              <li><a href="?page={{products.previous_page_number}}" class="pagination_link"><</a></li>
+              <li><a href="?page={{products.previous_page_number}}" class="pagination__link"><</a></li>
           {% endif %}
-
+          
           {% for page in products.paginator.page_range %}
-                <li><a href="?page={{page}}" class="pagination__link {% if products.number == page %}active{% endif %}">{{page}}</a></li>
-          {% endfor %}          
-             
-           
+                  <li><a href="?page={{page}}" class="pagination__link {% if products.number == page %}active{% endif %}">{{page}}</a></li>
+          {% endfor %}
+          
           {% if products.has_next %}
-              <li><a href="?page={{products.next_page_number}}" class="pagination_link">></a></li>
+              <li><a href="?page={{products.next_page_number}}" class="pagination__link">></a></li>
           {% endif %}
       </ul>
-
   {% else %}
-      <div class="no-products">
-        <img src="{% static 'images/empty-box.png' %}" alt="Bo'sh" class="no-products__img">
-        <h3 class="no-products__title">Hozircha mahsulot mavjud emas 😔</h3>
-        <p class="no-products__text">Iltimos, keyinroq qaytib ko‘ring yoki boshqa toifani tanlang.</p>
+      <div class="no-products text-center" style="padding: 60px 0;">
+          <i class="fi fi-rs-box-open" style="font-size: 48px; color: #999;"></i>
+          <h2 style="margin-top: 15px; color: #555;">Mahsulot mavjud emas</h2>
+          <p style="color: #888;">Hozircha katalogda hech qanday mahsulot yo‘q. Tez orada yangilanadi 🙂</p>
       </div>
   {% endif %}
 </section>
 
 <script>
-    // Barcha cart tugmalariga listener qo'shish
-    document.querySelectorAll('.cart__btn').forEach(btn => {
+  document.querySelectorAll('.cart__btn').forEach(btn => {
       btn.addEventListener('click', function(e) {
-        e.preventDefault(); // Linkni ochilishini to'xtatish
-        
-        // Product ID ni olish (data atributdan)
-        const productId = this.getAttribute('data-product-id');
-        
-        // Agar product ID topilmasa
-        if (!productId) {
-          console.error('Product ID topilmadi!');
-          alert('Xatolik: Mahsulot ID topilmadi');
-          return;
-        }
-        
-        // Backend'ga so'rov yuborish
-        fetch(`/cart/add/${productId}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            // Agar CSRF token kerak bo'lsa:
-            // 'X-CSRFToken': getCookie('csrftoken')
-          },
-          // Agar qo'shimcha ma'lumot yuborish kerak bo'lsa:
-          // body: JSON.stringify({ quantity: 1 })
-        })
-        .then(response => response.json())
-        .then(data => {
-          console.log('Savatchaga qo\'shildi:', data);
+          e.preventDefault();
           
-          // Tugma animatsiyasi yoki xabar
-          this.classList.add('added');
-          setTimeout(() => this.classList.remove('added'), 1000);
+          const productId = this.getAttribute('data-product-id');
           
-          // Savatchadagi mahsulotlar sonini yangilash (agar kerak bo'lsa)
-          // updateCartCount(data.cart_count);
-        })
-        .catch(error => {
-          console.error('Xatolik:', error);
-          alert('Xatolik yuz berdi. Qayta urinib ko\'ring.');
-        });
+          fetch(`/cart/add/${productId}`, {
+              method: 'GET',
+              headers: {
+                  'Content-Type': 'application/json',
+              }
+          })
+          .then(response => response.json())
+          .then(data => {
+              console.log('Savatchaga qo\'shildi:', data);
+              let count_btn = document.getElementById('cart_count')
+              count_btn.textContent = data['cart_count']
+              this.classList.add('added');
+              setTimeout(() => this.classList.remove('added'), 1000);
+          })
+          .catch(error => {
+              console.error('Xatolik:', error);
+          });
       });
-    });
+  });
 </script>
